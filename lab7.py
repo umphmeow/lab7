@@ -1,7 +1,7 @@
 import random
 
 class BookRecommendation:
-    def book_(self, k):
+    def __init__(self, k):
         self.k = k
         self.books = [{'title': f"Book{i + 1}"} for i in range(k)]
         self.all_book_sequences = []
