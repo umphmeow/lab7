@@ -47,8 +47,40 @@ class BookRecommendation:
         for book in self.books:
             print(book)
 
+    def print_filtered_sequences(self):
+        sequences = []
+        for i in range(2, len(self.books) + 1):
+            for sequence in self.get_permutations(self.books, i):
+                sequence = list(sequence)
+                for j in range(2, len(sequence)):
+                    for k in range(j - 1, 0, -1):
+                        if sequence[k]['rating'] < sequence[j]['rating']:
+                            sequence[k + 1:j + 1] = sequence[k:j]
+                            sequence[k] = sequence[j]
+                            break
+                if sequence not in sequences:
+                    sequences.append(sequence)
+
+        filtered_sequences = []
+        for sequence in sequences:
+            avg_rating = sum([book['rating'] for book in sequence]) / len(sequence)
+            if avg_rating > 3.0:
+                filtered_sequences.append(sequence)
+
+        if filtered_sequences:
+            print("Уникальные возможные последовательности книг для чтения после фильтрации:")
+            for sequence in filtered_sequences:
+                avg_rating = sum([book['rating'] for book in sequence]) / len(sequence)
+                print([book['title'] for book in sequence], f"Средний рейтинг: {avg_rating:.2f}")
+
+            max_avg_rating = max([sum([book['rating'] for book in sequence]) / len(sequence) for sequence in filtered_sequences])
+            print("Максимальный средний рейтинг:", max_avg_rating)
+        else:
+            print("В списке недостаточно книг для вычисления максимального среднего рейтинга.")
+
 # Usage example:
 k = int(input("Введите количество книг: "))
 recommendation = BookRecommendation(k)
 recommendation.generate_book_sequences()
 recommendation.generate_rating_and_pages()
+recommendation.print_filtered_sequences()
