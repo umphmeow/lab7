@@ -78,7 +78,6 @@ class BookRecommendation:
         else:
             print("В списке недостаточно книг для вычисления максимального среднего рейтинга.")
 
-# Usage example:
 k = int(input("Введите количество книг: "))
 recommendation = BookRecommendation(k)
 recommendation.generate_book_sequences()
